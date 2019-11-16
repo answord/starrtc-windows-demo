@@ -6,13 +6,14 @@
 #include "CSqliteDB.h"
 #include "CSoundManager.h"
 #include "CUserManager.h"
+#include "VOIPForCSharpe.h"
 
 
 class YpVoip : public CLocalDataControl, public IVoipManagerListener, public CPicControlCallback, public IShowLiveCallback, public ISoundCallback
 {
 
 public:
-	YpVoip(CUserManager* pUserManager);   // 标准构造函数
+	YpVoip();   // 标准构造函数
 	virtual ~YpVoip();
 
 public:
@@ -135,9 +136,40 @@ public:
 	CSoundManager* m_pSoundManager;
 	CShowLiveDlg* m_ShowLiveDlg;
 	bool m_bConnect;
-	//CSqliteDB* m_pSqliteDB;
 	string m_strTargetId;
 	bool m_bAudio;
-	void callPerson(string targetid);
 
+	OnCallingCallback pOnCalling;
+
+	/*
+	 * 登陆
+	 */
+	bool login(string strLocalId);
+	/**
+	 * 主叫方调用
+	 * 发起通话
+	 * @param strTargetId 对方ID
+	 */
+	bool call(string strTargetId);
+	/**
+	 * 主叫方调用
+	 * 对方接听或拒绝前 主叫方主动取消呼叫
+	 */
+	void cancel();
+	/**
+	 * 被叫方调用
+	 * 同意跟主叫方通话
+	 * @param fromID
+	 */
+	void accept(string fromID);
+	/**
+	 * 被叫方调用
+	 * 拒绝跟主叫方通话
+	 */
+	void refuse();
+	/**
+	 * 双方都可调用
+	 * 挂断
+	 */
+	void hangup(int isActive);
 };

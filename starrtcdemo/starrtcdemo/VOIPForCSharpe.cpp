@@ -6,51 +6,89 @@
 #include "CVoipDlg.h"
 #include "Resource.h"
 #include "YpVoip.h"
-CUserManager* m_pUserManager;
-YpVoip *ypip;
-BOOL YPLogin(char* localuserid) {
-	m_pUserManager = new CUserManager();
-	CLogin login(m_pUserManager);
-	//bool bRead = login.readConfig();
-	//if (!bRead)fdf 
-	//{
-	//	//OnClose();
-	//	return FALSE;
-	//}
-	m_pUserManager->m_ServiceParam.m_strUserId = localuserid;
-	if (ypip == NULL) {
-		ypip = new YpVoip(m_pUserManager);
-	}
-	bool bSuccess = login.logIn();
-	if (bSuccess)
+
+YpVoip *ypVoip;
+
+bool checkVoip()
+{
+	if (ypVoip == NULL)
 	{
-		//AfxMessageBox("登录成功");
-		//login.startIMServer((char*)m_pUserManager->m_strIMServerIp.c_str(), m_pUserManager->m_nIMServerPort, (char*)m_pUserManager->m_ServiceParam.m_strUserId.c_str(), (char*)m_pUserManager->m_ServiceParam.m_strAgentId.c_str(), (char*)m_pUserManager->m_strTokenId.c_str());
+		return false;
 	}
 	else
 	{
-		AfxMessageBox("登录失败，请检查配置信息");
+		return true;
 	}
-	return TRUE;
 }
 
+BOOL YPLogin(char* localUserId)
+{
+	if (ypVoip == NULL)
+	{
+		ypVoip = new YpVoip();
+	}
 
+	string strLocalId = localUserId;
+	if(ypVoip->login(strLocalId))
+	{
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
+}
 
-int VoipCallPerson(char* targetId, char* str) {
+BOOL YPCall(char* targetUserId)
+{
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	if (ypip == NULL) {
-		ypip = new YpVoip(m_pUserManager);
+
+	if (!checkVoip())
+	{
+		// 未登陆，不允许调用相关方法
+		return FALSE;
 	}
-	string string_targetId;
-	string_targetId = targetId;
-	ypip->callPerson(string_targetId);
-	return 1;
+
+	string strTargetId = targetUserId;
+	if (ypVoip->call(strTargetId))
+	{
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
 }
 
-int DeleteVoip() {
-	if (ypip != NULL) {
-		delete ypip;
-		ypip = NULL;
+void YPCancel()
+{
+
+}
+
+void YPAccept(char* fromID)
+{
+
+}
+
+void YPRefuse()
+{
+
+}
+
+void YPHangup(int isActive)
+{
+
+}
+
+void YPDeleteVoip()
+{
+	if(ypVoip != NULL) {
+		delete ypVoip;
+		ypVoip = NULL;
 	}
-	return 1;
+}
+
+void YPOnCalling(OnCallingCallback callback)
+{
+	ypVoip->pOnCalling = callback;
 }

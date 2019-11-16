@@ -4,8 +4,11 @@
 #include "stdafx.h"
 #include "starrtcdemo.h"
 #include "YpVoip.h"
+#include "VOIPForCSharpe.h"
 #include "afxdialogex.h"
 #include "CropType.h"
+#include "CLogin.h"
+
 enum VOIP_LIST_REPORT_NAME
 {
 	VOIP_VIDEO_NAME = 0,
@@ -15,10 +18,8 @@ enum VOIP_LIST_REPORT_NAME
 };
 
 
-YpVoip::YpVoip(CUserManager* pUserManager)
+YpVoip::YpVoip()
 {
-	m_pUserManager = pUserManager;
-	m_pVoipManager = new XHVoipManager(this);
 	if (m_ShowLiveDlg == NULL) {
 		m_ShowLiveDlg = new CShowLiveDlg();
 		m_ShowLiveDlg->addPictureControlListener(this);
@@ -27,6 +28,8 @@ YpVoip::YpVoip(CUserManager* pUserManager)
 	}
 	m_strTargetId = "";
 	m_pSoundManager = new CSoundManager(this);
+
+	pOnCalling = NULL;
 }
 
 YpVoip::~YpVoip()
@@ -59,6 +62,8 @@ YpVoip::~YpVoip()
  */
 void YpVoip::onCalling(string fromID)
 {
+	pOnCalling((char*)fromID.c_str());
+
 	CString str;
 	str.Format("是否同意用户:%s请求视频通话", fromID.c_str());
 	if (IDYES == AfxMessageBox(str, MB_YESNO))
@@ -157,7 +162,6 @@ void YpVoip::onRefused(string fromID)
 	}
 	m_ShowLiveDlg->ShowWindow(SW_HIDE);
 	m_strTargetId = "";
-	AfxMessageBox("对方拒绝接通");
 }
 
 /**
@@ -176,7 +180,6 @@ void YpVoip::onBusy(string fromID)
 	}
 	m_ShowLiveDlg->ShowWindow(SW_HIDE);
 	m_strTargetId = "";
-	AfxMessageBox("对方线路忙");
 }
 
 /**
@@ -394,19 +397,27 @@ void YpVoip::querySoundData(char** pData, int* nLength)
 	}
 }
 
+bool YpVoip::login(string strLocalId)
+{
+	m_pUserManager = new CUserManager();
+	m_pUserManager->m_ServiceParam.m_strUserId = strLocalId;
 
+	CLogin login(m_pUserManager);
+	m_pVoipManager = new XHVoipManager(this);
+	bool bSuccess = login.logIn();
+	return bSuccess;
+}
 
-void YpVoip::callPerson(string targetid)
+bool YpVoip::call(string strTargetId)
 {
 	bool isCallSuccess = false;
 	//呼叫对方
 	if (m_pVoipManager != NULL)
 	{
-		isCallSuccess = m_pVoipManager->call(targetid);
+		isCallSuccess = m_pVoipManager->call(strTargetId);
 	}
 	if (!isCallSuccess) {
-		AfxMessageBox("呼叫失败");
-		return;
+		return false;
 	}
 	m_ShowLiveDlg->ShowWindow(SW_SHOW);
 	if (m_ShowLiveDlg->m_pDataShowView != NULL)
@@ -416,4 +427,25 @@ void YpVoip::callPerson(string targetid)
 	}
 
 	startGetData((CROP_TYPE)m_pUserManager->m_ServiceParam.m_CropType, false);
+	return true;
+}
+
+void YpVoip::cancel()
+{
+
+}
+
+void YpVoip::accept(string fromID)
+{
+
+}
+
+void YpVoip::refuse()
+{
+
+}
+
+void YpVoip::hangup(int isActive)
+{
+	AfxMessageBox("handup");
 }
