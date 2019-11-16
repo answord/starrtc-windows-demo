@@ -261,6 +261,12 @@
     <ClInclude Include="CSuperAudioChatroomDlg.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="YpVoip.h">
+      <Filter>voip</Filter>
+    </ClInclude>
+    <ClInclude Include="VOIPForCSharpe.h">
+      <Filter>voip</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -406,6 +412,12 @@
     </ClCompile>
     <ClCompile Include="CSuperAudioChatroomDlg.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="YpVoip.cpp">
+      <Filter>voip</Filter>
+    </ClCompile>
+    <ClCompile Include="VOIPForCSharpe.cpp">
+      <Filter>voip</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

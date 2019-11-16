@@ -23,7 +23,7 @@
     <ProjectGuid>{30A7D24E-7E15-4654-953F-5FC630FEB9C0}</ProjectGuid>
     <Keyword>MFCProj</Keyword>
     <RootNamespace>starrtcdemo</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -34,7 +34,7 @@
     <UseOfMfc>Static</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -83,7 +83,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\..\release\starrtc-demo\</OutDir>
+    <OutDir>..\..\..\WindowsFormsApp1\WindowsFormsApp1\bin\</OutDir>
     <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -153,7 +153,7 @@
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
@@ -191,18 +191,19 @@
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\other\VSProject\starrtcdemo\starrtcdemo\third\pthreads-w32-2-9-1-release\Pre-built.2\include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WINDOWS;NDEBUG;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\third\sqlite;..\..\third\json\include;..\..\third\opencv\build32\include;..\..\third\starrtccoredll\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>libstarRTC.lib;json_release.lib</AdditionalDependencies>
+      <AdditionalDependencies>starrtccoreDll_release.lib;json_release.lib;opencv_core341.lib;opencv_highgui341.lib;opencv_imgcodecs341.lib;opencv_videoio341.lib;sqlite3.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\third\opencv\build32\lib\Release;..\..\third\opencv\build32\bin\Release;..\..\third\sqlite;..\..\third\starrtccoredll\lib;..\..\third\json\lib</AdditionalLibraryDirectories>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -288,7 +289,9 @@
     <ClInclude Include="starrtcdemoDlg.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="VOIPForCSharpe.h" />
     <ClInclude Include="WhitePanelActionType.h" />
+    <ClInclude Include="YpVoip.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAudioChatroomDlg.cpp" />
@@ -344,6 +347,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="VOIPForCSharpe.cpp" />
+    <ClCompile Include="YpVoip.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="starrtcdemo.rc" />
