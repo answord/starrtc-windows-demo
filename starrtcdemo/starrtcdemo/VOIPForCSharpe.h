@@ -17,11 +17,11 @@ extern "C" {
 	// 登陆(一定要先调用登陆并登陆成功，才能调用其他函数)
     __declspec(dllexport) BOOL YPLogin(char* localUserId);
 	// 发起通话（主叫方调用）
-	__declspec(dllexport) BOOL YPCall(char* targetUserId);
+	__declspec(dllexport) BOOL YPCall(char* targetUserId, BOOL showSelfVideo, BOOL showOtherVideo);
 	// 主叫方主动取消呼叫（主叫方调用）
 	__declspec(dllexport) void YPCancel();
 	// 同意跟主叫方通话（被叫方调用）
-	__declspec(dllexport) void YPAccept(char* fromID);
+	__declspec(dllexport) void YPAccept(char* fromID, BOOL showSelfVideo, BOOL showOtherVideo);
 	// 拒绝跟主叫方通话（被叫方调用）
 	__declspec(dllexport) void YPRefuse();
 	// 挂断（双方都可调用）

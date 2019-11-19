@@ -139,6 +139,11 @@ public:
 	string m_strTargetId;
 	bool m_bAudio;
 
+	bool m_bShowSelfVideo;
+	bool m_bShowOtherVideo;
+
+	CRITICAL_SECTION m_critPicture;
+
 	OnCallingCallback pOnCalling;
 	OnCancledCallback pOnCancled;
 	OnRefusedCallback pOnRefused;
@@ -159,7 +164,7 @@ public:
 	 * 发起通话
 	 * @param strTargetId 对方ID
 	 */
-	bool call(string strTargetId);
+	bool call(string strTargetId, bool showSelfVideo, bool showOtherVideo);
 	/**
 	 * 主叫方调用
 	 * 对方接听或拒绝前 主叫方主动取消呼叫
@@ -170,7 +175,7 @@ public:
 	 * 同意跟主叫方通话
 	 * @param fromID
 	 */
-	void accept(string fromID);
+	void accept(string fromID, bool showSelfVideo, bool showOtherVideo);
 	/**
 	 * 被叫方调用
 	 * 拒绝跟主叫方通话

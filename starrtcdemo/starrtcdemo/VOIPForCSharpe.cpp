@@ -39,9 +39,9 @@ BOOL YPLogin(char* localUserId)
 	}
 }
 
-BOOL YPCall(char* targetUserId)
+BOOL YPCall(char* targetUserId, BOOL showSelfVideo, BOOL showOtherVideo)
 {
-	//AFX_MANAGE_STATE(AfxGetStaticModuleState());
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	if (!checkVoip())
 	{
@@ -50,7 +50,7 @@ BOOL YPCall(char* targetUserId)
 	}
 
 	string strTargetId = targetUserId;
-	if (ypVoip->call(strTargetId))
+	if (ypVoip->call(strTargetId, showSelfVideo, showOtherVideo))
 	{
 		return TRUE;
 	}
@@ -71,7 +71,7 @@ void YPCancel()
 	ypVoip->cancel();
 }
 
-void YPAccept(char* fromID)
+void YPAccept(char* fromID, BOOL showSelfVideo, BOOL showOtherVideo)
 {
 	if (!checkVoip())
 	{
@@ -80,7 +80,7 @@ void YPAccept(char* fromID)
 	}
 
 	string strFromID = fromID;
-	ypVoip->accept(strFromID);
+	ypVoip->accept(strFromID, showSelfVideo, showOtherVideo);
 }
 
 void YPRefuse()
