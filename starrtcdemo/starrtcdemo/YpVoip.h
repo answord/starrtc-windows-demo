@@ -140,6 +140,15 @@ public:
 	bool m_bAudio;
 
 	OnCallingCallback pOnCalling;
+	OnCancledCallback pOnCancled;
+	OnRefusedCallback pOnRefused;
+	OnBusyCallback pOnBusy;
+	OnConnectedCallback pOnConnected;
+	OnHangupCallback pOnHangup;
+	OnErrorCallback pOnError;
+
+	OnGetVideoRawCallback pOnGetSelfVideoRaw;
+	OnGetVideoRawCallback pOnGetOtherVideoRaw;
 
 	/*
 	 * 登陆

@@ -356,9 +356,49 @@ int YpVoip::cropVideoRawNV12(int w, int h, uint8_t* videoData, int dataLen, int 
 }
 void YpVoip::drawPic(YUV_TYPE type, int w, int h, uint8_t* videoData, int videoDataLen)
 {
+	/*
 	if (m_ShowLiveDlg->m_pDataShowView != NULL && m_bAudio == false)
 	{
 		m_ShowLiveDlg->m_pDataShowView->drawPic(type, m_pUserManager->m_ServiceParam.m_strUserId, w, h, videoData, videoDataLen);
+	}
+	*/
+
+	if (videoData != NULL && videoDataLen > 0)
+	{
+		uint8_t* videoDataRGB = new uint8_t[w*h * 3];
+		if (type == FMT_NV12 || type == FMT_NV21)
+		{
+			CUtil::yuv420sp_to_rgb24(type, videoData, videoDataRGB, w, h);
+		}
+		else if (type == FMT_YUV420P)
+		{
+			CUtil::yuv420p_to_rgb24(videoData, videoDataRGB, w, h);
+		}
+		else
+		{
+			memcpy(videoDataRGB, videoData, sizeof(uint8_t)*videoDataLen);
+		}
+		CImage image;       //使用图片类
+		image.Create(w, h, 24, 0);
+		//首地址  
+		byte* pRealData = (byte*)image.GetBits();
+		//首地址    
+		//行距  
+		int pit = image.GetPitch();
+		for (int i = 0; i < w; i++)
+		{
+			for (int j = 0; j < h; j++)
+			{
+				*(pRealData + pit * j + i * 3) = (int)videoDataRGB[3 * j*w + 3 * i];
+				*(pRealData + pit * j + i * 3 + 1) = (int)videoDataRGB[3 * j*w + 3 * i + 1];
+				*(pRealData + pit * j + i * 3 + 2) = (int)videoDataRGB[3 * j*w + 3 * i + 2];
+			}
+		}
+		HBITMAP hbmp = image.Detach();
+		pOnGetSelfVideoRaw((char*)m_pUserManager->m_ServiceParam.m_strUserId.c_str(), w, h, hbmp, videoDataLen);
+		
+		delete[] videoDataRGB;
+		videoDataRGB = NULL;
 	}
 }
 
@@ -419,7 +459,7 @@ bool YpVoip::call(string strTargetId)
 	if (!isCallSuccess) {
 		return false;
 	}
-	m_ShowLiveDlg->ShowWindow(SW_SHOW);
+	//m_ShowLiveDlg->ShowWindow(SW_SHOW);
 	if (m_ShowLiveDlg->m_pDataShowView != NULL)
 	{
 		m_ShowLiveDlg->m_pDataShowView->addUser(m_pUserManager->m_ServiceParam.m_strUserId, true);
