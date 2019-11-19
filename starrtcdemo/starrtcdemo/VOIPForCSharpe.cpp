@@ -41,7 +41,7 @@ BOOL YPLogin(char* localUserId)
 
 BOOL YPCall(char* targetUserId, BOOL showSelfVideo, BOOL showOtherVideo)
 {
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());
+	//AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	if (!checkVoip())
 	{
