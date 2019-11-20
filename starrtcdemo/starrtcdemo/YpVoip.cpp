@@ -76,7 +76,10 @@ YpVoip::~YpVoip()
  */
 void YpVoip::onCalling(string fromID)
 {
-	pOnCalling((char*)fromID.c_str());
+	if (pOnCalling != NULL)
+	{
+		pOnCalling((char*)fromID.c_str());
+	}
 
 	//CString str;
 	//str.Format("是否同意用户:%s请求视频通话", fromID.c_str());
@@ -159,7 +162,10 @@ void YpVoip::onCancled(string fromID)
 	}
 	m_ShowLiveDlg->ShowWindow(SW_HIDE);
 	m_strTargetId = "";
-	pOnCancled((char*)fromID.c_str());
+	if (pOnCancled != NULL)
+	{
+		pOnCancled((char*)fromID.c_str());
+	}
 }
 
 /**
@@ -177,7 +183,10 @@ void YpVoip::onRefused(string fromID)
 	}
 	m_ShowLiveDlg->ShowWindow(SW_HIDE);
 	m_strTargetId = "";
-	pOnRefused((char*)fromID.c_str());
+	if (pOnRefused != NULL)
+	{
+		pOnRefused((char*)fromID.c_str());
+	}
 }
 
 /**
@@ -196,7 +205,10 @@ void YpVoip::onBusy(string fromID)
 	}
 	m_ShowLiveDlg->ShowWindow(SW_HIDE);
 	m_strTargetId = "";
-	pOnBusy((char*)fromID.c_str());
+	if (pOnBusy != NULL)
+	{
+		pOnBusy((char*)fromID.c_str());
+	}
 }
 
 /**
@@ -228,7 +240,10 @@ void YpVoip::onConnected(string fromID)
 		m_pSoundManager->startSoundData(true);
 	}
 	m_bConnect = true;
-	pOnConnected((char*)fromID.c_str());
+	if (pOnConnected != NULL)
+	{
+		pOnConnected((char*)fromID.c_str());
+	}
 }
 
 /**
@@ -262,7 +277,10 @@ void YpVoip::onHangup(string fromID)
 	}
 	m_ShowLiveDlg->ShowWindow(SW_HIDE);
 	m_strTargetId = "";
-	pOnHangup((char*)fromID.c_str());
+	if (pOnHangup != NULL)
+	{
+		pOnHangup((char*)fromID.c_str());
+	}
 }
 
 /**
@@ -291,7 +309,10 @@ void YpVoip::onError(string errorCode)
 	//strErr.Format("err:%s", errorCode.c_str());
 	//AfxMessageBox(strErr);
 	m_strTargetId = "";
-	pOnError((char*)errorCode.c_str());
+	if (pOnError != NULL)
+	{
+		pOnError((char*)errorCode.c_str());
+	}
 }
 
 /**
