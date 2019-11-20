@@ -185,5 +185,5 @@ public:
 	 * 双方都可调用
 	 * 挂断
 	 */
-	void hangup(int isActive);
+	void hangup();
 };

@@ -25,7 +25,7 @@ extern "C" {
 	// 拒绝跟主叫方通话（被叫方调用）
 	__declspec(dllexport) void YPRefuse();
 	// 挂断（双方都可调用）
-	__declspec(dllexport) void YPHangup(int isActive);
+	__declspec(dllexport) void YPHangup();
 	// 释放
 	__declspec(dllexport) void YPDeleteVoip();
 

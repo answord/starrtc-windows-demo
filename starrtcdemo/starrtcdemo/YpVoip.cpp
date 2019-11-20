@@ -78,32 +78,32 @@ void YpVoip::onCalling(string fromID)
 {
 	pOnCalling((char*)fromID.c_str());
 
-	CString str;
-	str.Format("是否同意用户:%s请求视频通话", fromID.c_str());
-	if (IDYES == AfxMessageBox(str, MB_YESNO))
-	{
-		m_bAudio = false;
-		m_strTargetId = fromID;
-		m_ShowLiveDlg->ShowWindow(SW_SHOW);
-		m_pVoipManager->accept(fromID);
-		m_bConnect = true;
+	//CString str;
+	//str.Format("是否同意用户:%s请求视频通话", fromID.c_str());
+	//if (IDYES == AfxMessageBox(str, MB_YESNO))
+	//{
+	//	m_bAudio = false;
+	//	m_strTargetId = fromID;
+	//	m_ShowLiveDlg->ShowWindow(SW_SHOW);
+	//	m_pVoipManager->accept(fromID);
+	//	m_bConnect = true;
 
-		if (m_ShowLiveDlg->m_pDataShowView != NULL)
-		{
-			m_ShowLiveDlg->m_pDataShowView->addUser(m_pUserManager->m_ServiceParam.m_strUserId, false);
-			m_ShowLiveDlg->m_pDataShowView->addUser(fromID, true);
-			m_ShowLiveDlg->m_pDataShowView->setShowPictures();
-		}
-		startGetData((CROP_TYPE)m_pUserManager->m_ServiceParam.m_CropType, true);
-		if (m_pSoundManager != NULL)
-		{
-			m_pSoundManager->startGetSoundData();
-		}
-	}
-	else
-	{
-		m_pVoipManager->refuse();
-	}
+	//	if (m_ShowLiveDlg->m_pDataShowView != NULL)
+	//	{
+	//		m_ShowLiveDlg->m_pDataShowView->addUser(m_pUserManager->m_ServiceParam.m_strUserId, false);
+	//		m_ShowLiveDlg->m_pDataShowView->addUser(fromID, true);
+	//		m_ShowLiveDlg->m_pDataShowView->setShowPictures();
+	//	}
+	//	startGetData((CROP_TYPE)m_pUserManager->m_ServiceParam.m_CropType, true);
+	//	if (m_pSoundManager != NULL)
+	//	{
+	//		m_pSoundManager->startSoundData(true);
+	//	}
+	//}
+	//else
+	//{
+	//	m_pVoipManager->refuse();
+	//}
 }
 
 /**
@@ -122,7 +122,7 @@ void YpVoip::onAudioCalling(string fromID)
 		CRect rect;
 		m_ShowLiveDlg->m_bAudio = true;
 		m_ShowLiveDlg->m_strAimID = fromID;
-		m_ShowLiveDlg->ShowWindow(SW_SHOW);
+		//m_ShowLiveDlg->ShowWindow(SW_SHOW);
 		m_pVoipManager->accept(fromID);
 		m_bConnect = true;
 
@@ -135,7 +135,7 @@ void YpVoip::onAudioCalling(string fromID)
 		//startGetData((CROP_TYPE)m_pUserManager->m_ServiceParam.m_CropType, true);
 		if (m_pSoundManager != NULL)
 		{
-			m_pSoundManager->startGetSoundData();
+			m_pSoundManager->startSoundData(true);
 		}
 	}
 	else
@@ -159,6 +159,7 @@ void YpVoip::onCancled(string fromID)
 	}
 	m_ShowLiveDlg->ShowWindow(SW_HIDE);
 	m_strTargetId = "";
+	pOnCancled((char*)fromID.c_str());
 }
 
 /**
@@ -176,6 +177,7 @@ void YpVoip::onRefused(string fromID)
 	}
 	m_ShowLiveDlg->ShowWindow(SW_HIDE);
 	m_strTargetId = "";
+	pOnRefused((char*)fromID.c_str());
 }
 
 /**
@@ -194,6 +196,7 @@ void YpVoip::onBusy(string fromID)
 	}
 	m_ShowLiveDlg->ShowWindow(SW_HIDE);
 	m_strTargetId = "";
+	pOnBusy((char*)fromID.c_str());
 }
 
 /**
@@ -222,9 +225,10 @@ void YpVoip::onConnected(string fromID)
 	m_bInsertData = true;
 	if (m_pSoundManager != NULL)
 	{
-		m_pSoundManager->startGetSoundData();
+		m_pSoundManager->startSoundData(true);
 	}
 	m_bConnect = true;
+	pOnConnected((char*)fromID.c_str());
 }
 
 /**
@@ -236,7 +240,7 @@ void YpVoip::onHangup(string fromID)
 	stopGetData();
 	if (m_pSoundManager != NULL)
 	{
-		m_pSoundManager->stopGetSoundData();
+		m_pSoundManager->stopSoundData();
 	}
 
 	if (m_pVoipManager != NULL)
@@ -258,6 +262,7 @@ void YpVoip::onHangup(string fromID)
 	}
 	m_ShowLiveDlg->ShowWindow(SW_HIDE);
 	m_strTargetId = "";
+	pOnHangup((char*)fromID.c_str());
 }
 
 /**
@@ -270,7 +275,7 @@ void YpVoip::onError(string errorCode)
 	stopGetData();
 	if (m_pSoundManager != NULL)
 	{
-		m_pSoundManager->stopGetSoundData();
+		m_pSoundManager->stopSoundData();
 	}
 	if (m_pVoipManager != NULL)
 	{
@@ -282,10 +287,11 @@ void YpVoip::onError(string errorCode)
 	}
 	m_ShowLiveDlg->ShowWindow(SW_HIDE);
 	//断开连接
-	CString strErr;
-	strErr.Format("err:%s", errorCode.c_str());
-	AfxMessageBox(strErr);
+	//CString strErr;
+	//strErr.Format("err:%s", errorCode.c_str());
+	//AfxMessageBox(strErr);
 	m_strTargetId = "";
+	pOnError((char*)errorCode.c_str());
 }
 
 /**
@@ -365,7 +371,7 @@ void YpVoip::stopLive()
 	stopGetData();
 	if (m_pSoundManager != NULL)
 	{
-		m_pSoundManager->stopGetSoundData();
+		m_pSoundManager->stopSoundData();
 	}
 
 	if (m_pVoipManager != NULL)
@@ -553,21 +559,39 @@ bool YpVoip::call(string strTargetId, bool showSelfVideo, bool showOtherVideo)
 
 void YpVoip::cancel()
 {
-
+	stopLive();
 }
 
 void YpVoip::accept(string fromID, bool showSelfVideo, bool showOtherVideo)
 {
 	m_bShowSelfVideo = showSelfVideo;
 	m_bShowOtherVideo = showOtherVideo;
+
+	m_bAudio = false;
+	m_strTargetId = fromID;
+	
+	m_pVoipManager->accept(fromID);
+	m_bConnect = true;
+
+	if (m_ShowLiveDlg->m_pDataShowView != NULL)
+	{
+		m_ShowLiveDlg->m_pDataShowView->addUser(m_pUserManager->m_ServiceParam.m_strUserId, false);
+		m_ShowLiveDlg->m_pDataShowView->addUser(fromID, true);
+		m_ShowLiveDlg->m_pDataShowView->setShowPictures();
+	}
+	startGetData((CROP_TYPE)m_pUserManager->m_ServiceParam.m_CropType, true);
+	if (m_pSoundManager != NULL)
+	{
+		m_pSoundManager->startSoundData(true);
+	}
 }
 
 void YpVoip::refuse()
 {
-
+	m_pVoipManager->refuse();
 }
 
-void YpVoip::hangup(int isActive)
+void YpVoip::hangup()
 {
-	
+	stopLive();
 }

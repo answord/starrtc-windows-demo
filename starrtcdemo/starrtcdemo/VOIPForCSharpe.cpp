@@ -94,7 +94,7 @@ void YPRefuse()
 	ypVoip->refuse();
 }
 
-void YPHangup(int isActive)
+void YPHangup()
 {
 	if (!checkVoip())
 	{
@@ -102,7 +102,7 @@ void YPHangup(int isActive)
 		return;
 	}
 
-	ypVoip->hangup(isActive);
+	ypVoip->hangup();
 }
 
 void YPDeleteVoip()
