@@ -134,7 +134,6 @@ public:
 	CUserManager* m_pUserManager;
 	XHVoipManager* m_pVoipManager;
 	CSoundManager* m_pSoundManager;
-	CShowLiveDlg* m_ShowLiveDlg;
 	bool m_bConnect;
 	string m_strTargetId;
 	bool m_bAudio;
