@@ -478,6 +478,26 @@ bool YpVoip::call(string strTargetId, bool showSelfVideo, bool showOtherVideo)
 	return true;
 }
 
+bool YpVoip::callAudio(string strTargetId)
+{
+	m_bShowSelfVideo = false;
+	m_bShowOtherVideo = false;
+
+	bool isCallSuccess = false;
+	m_bAudio = true;
+	//呼叫对方
+	if (m_pVoipManager != NULL)
+	{
+		isCallSuccess = m_pVoipManager->audioCall(strTargetId);
+	}
+	if (!isCallSuccess) {
+		return false;
+	}
+
+	//startGetData((CROP_TYPE)m_pUserManager->m_ServiceParam.m_CropType, false);
+	return true;
+}
+
 void YpVoip::cancel()
 {
 	stopLive();

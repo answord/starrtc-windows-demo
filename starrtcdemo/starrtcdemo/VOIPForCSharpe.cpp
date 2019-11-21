@@ -60,6 +60,25 @@ BOOL YPCall(char* targetUserId, BOOL showSelfVideo, BOOL showOtherVideo)
 	}
 }
 
+BOOL YPCallAudio(char* targetUserId)
+{
+	if (!checkVoip())
+	{
+		// 未登陆，不允许调用相关方法
+		return FALSE;
+	}
+
+	string strTargetId = targetUserId;
+	if (ypVoip->callAudio(strTargetId))
+	{
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
+}
+
 void YPCancel()
 {
 	if (!checkVoip())

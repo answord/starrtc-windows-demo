@@ -19,6 +19,8 @@ extern "C" {
     __declspec(dllexport) BOOL YPLogin(char* localUserId);
 	// 发起通话（主叫方调用）
 	__declspec(dllexport) BOOL YPCall(char* targetUserId, BOOL showSelfVideo, BOOL showOtherVideo);
+	// 发起语音通话（主叫方调用）
+	__declspec(dllexport) BOOL YPCallAudio(char* targetUserId);
 	// 主叫方主动取消呼叫（主叫方调用）
 	__declspec(dllexport) void YPCancel();
 	// 同意跟主叫方通话（被叫方调用）

@@ -167,6 +167,12 @@ public:
 	bool call(string strTargetId, bool showSelfVideo, bool showOtherVideo);
 	/**
 	 * 主叫方调用
+	 * 发起语音通话
+	 * @param strTargetId 对方ID
+	 */
+	bool callAudio(string strTargetId);
+	/**
+	 * 主叫方调用
 	 * 对方接听或拒绝前 主叫方主动取消呼叫
 	 */
 	void cancel();
