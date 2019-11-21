@@ -83,6 +83,18 @@ void YPAccept(char* fromID, BOOL showSelfVideo, BOOL showOtherVideo)
 	ypVoip->accept(strFromID, showSelfVideo, showOtherVideo);
 }
 
+void YPAcceptAudio(char* fromID)
+{
+	if (!checkVoip())
+	{
+		// 未登陆，不允许调用相关方法
+		return;
+	}
+
+	string strFromID = fromID;
+	ypVoip->acceptAudio(strFromID);
+}
+
 void YPRefuse()
 {
 	if (!checkVoip())
@@ -116,6 +128,11 @@ void YPDeleteVoip()
 void YPOnCalling(OnCallingCallback callback)
 {
 	ypVoip->pOnCalling = callback;
+}
+
+void YPOnAudioCalling(OnAudioCallingCallback callback)
+{
+	ypVoip->pOnAudioCalling = callback;
 }
 
 void YPOnCancled(OnCancledCallback callback)

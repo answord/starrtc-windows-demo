@@ -27,6 +27,7 @@ YpVoip::YpVoip()
 	m_bShowOtherVideo = false;
 
 	pOnCalling = NULL;
+	pOnAudioCalling = NULL;
 	pOnCancled = NULL;
 	pOnRefused = NULL;
 	pOnBusy = NULL;
@@ -98,25 +99,30 @@ void YpVoip::onCalling(string fromID)
 */
 void YpVoip::onAudioCalling(string fromID)
 {
-	CString str;
-	str.Format("是否同意用户:%s请求语音通话", fromID.c_str());
-	if (IDYES == AfxMessageBox(str, MB_YESNO))
+	if (pOnAudioCalling != NULL)
 	{
-		m_bAudio = true;
-		m_strTargetId = fromID;
-		m_pVoipManager->accept(fromID);
-		m_bConnect = true;
+		pOnAudioCalling((char*)fromID.c_str());
+	}
 
-		//startGetData((CROP_TYPE)m_pUserManager->m_ServiceParam.m_CropType, true);
-		if (m_pSoundManager != NULL)
-		{
-			m_pSoundManager->startSoundData(true);
-		}
-	}
-	else
-	{
-		m_pVoipManager->refuse();
-	}
+	//CString str;
+	//str.Format("是否同意用户:%s请求语音通话", fromID.c_str());
+	//if (IDYES == AfxMessageBox(str, MB_YESNO))
+	//{
+	//	m_bAudio = true;
+	//	m_strTargetId = fromID;
+	//	m_pVoipManager->accept(fromID);
+	//	m_bConnect = true;
+
+	//	//startGetData((CROP_TYPE)m_pUserManager->m_ServiceParam.m_CropType, true);
+	//	if (m_pSoundManager != NULL)
+	//	{
+	//		m_pSoundManager->startSoundData(true);
+	//	}
+	//}
+	//else
+	//{
+	//	m_pVoipManager->refuse();
+	//}
 }
 
 /**
@@ -291,8 +297,6 @@ int YpVoip::getVideoRaw(string strUserId, int w, int h, uint8_t* videoData, int 
 			HBITMAP hbmp = image.Detach();
 			pOnGetOtherVideoRaw((char*)m_pUserManager->m_ServiceParam.m_strUserId.c_str(), w, h, hbmp, videoDataLen);
 
-			image.ReleaseDC();
-			image.Destroy();
 			DeleteObject(hbmp);
 			delete[] videoDataRGB;
 			videoDataRGB = NULL;
@@ -403,8 +407,6 @@ void YpVoip::drawPic(YUV_TYPE type, int w, int h, uint8_t* videoData, int videoD
 			HBITMAP hbmp = image.Detach();
 			pOnGetSelfVideoRaw((char*)m_pUserManager->m_ServiceParam.m_strUserId.c_str(), w, h, hbmp, videoDataLen);
 
-			image.ReleaseDC();
-			image.Destroy();
 			DeleteObject(hbmp);
 			delete[] videoDataRGB;
 			videoDataRGB = NULL;
@@ -493,6 +495,24 @@ void YpVoip::accept(string fromID, bool showSelfVideo, bool showOtherVideo)
 	m_bConnect = true;
 
 	startGetData((CROP_TYPE)m_pUserManager->m_ServiceParam.m_CropType, true);
+	if (m_pSoundManager != NULL)
+	{
+		m_pSoundManager->startSoundData(true);
+	}
+}
+
+void YpVoip::acceptAudio(string fromID)
+{
+	m_bShowSelfVideo = false;
+	m_bShowOtherVideo = false;
+
+	m_bAudio = true;
+	m_strTargetId = fromID;
+
+	m_pVoipManager->accept(fromID);
+	m_bConnect = true;
+
+	//startGetData((CROP_TYPE)m_pUserManager->m_ServiceParam.m_CropType, true);
 	if (m_pSoundManager != NULL)
 	{
 		m_pSoundManager->startSoundData(true);

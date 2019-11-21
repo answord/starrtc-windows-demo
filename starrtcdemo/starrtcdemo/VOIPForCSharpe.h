@@ -4,6 +4,7 @@
 using namespace std;
 
 typedef void(__stdcall *OnCallingCallback)(char* fromID);
+typedef void(__stdcall *OnAudioCallingCallback)(char* fromID);
 typedef void(__stdcall *OnCancledCallback)(char* fromID);
 typedef void(__stdcall *OnRefusedCallback)(char* fromID);
 typedef void(__stdcall *OnBusyCallback)(char* fromID);
@@ -22,6 +23,8 @@ extern "C" {
 	__declspec(dllexport) void YPCancel();
 	// 同意跟主叫方通话（被叫方调用）
 	__declspec(dllexport) void YPAccept(char* fromID, BOOL showSelfVideo, BOOL showOtherVideo);
+	// 同意跟主叫方语音通话（被叫方调用）
+	__declspec(dllexport) void YPAcceptAudio(char* fromID);
 	// 拒绝跟主叫方通话（被叫方调用）
 	__declspec(dllexport) void YPRefuse();
 	// 挂断（双方都可调用）
@@ -31,6 +34,8 @@ extern "C" {
 
 	// 被叫方收到主叫方的呼叫（被叫方响应）
 	__declspec(dllexport) void YPOnCalling(OnCallingCallback callback);
+	// 被叫方收到主叫方的语音呼叫（被叫方响应）
+	__declspec(dllexport) void YPOnAudioCalling(OnAudioCallingCallback callback);
 	// 主叫方在被叫方接听之前挂断，即通话被取消（被叫方响应）
 	__declspec(dllexport) void YPOnCancled(OnCancledCallback callback);
 	// 被叫方拒绝接通（主叫方响应）

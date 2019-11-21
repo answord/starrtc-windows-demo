@@ -144,6 +144,7 @@ public:
 	CRITICAL_SECTION m_critPicture;
 
 	OnCallingCallback pOnCalling;
+	OnAudioCallingCallback pOnAudioCalling;
 	OnCancledCallback pOnCancled;
 	OnRefusedCallback pOnRefused;
 	OnBusyCallback pOnBusy;
@@ -175,6 +176,11 @@ public:
 	 * @param fromID
 	 */
 	void accept(string fromID, bool showSelfVideo, bool showOtherVideo);
+	/*
+	 * 被叫方调用
+	 * 同意跟主叫方语音通话
+	 */
+	void acceptAudio(string fromID);
 	/**
 	 * 被叫方调用
 	 * 拒绝跟主叫方通话
