@@ -136,9 +136,19 @@ void YPHangup()
 	ypVoip->hangup();
 }
 
+void YPDeleteHBITMAP(HBITMAP hBitmap, uint8_t* videoDataRGB)
+{
+	DeleteObject(hBitmap);
+	hBitmap = NULL;
+
+	delete[] videoDataRGB;
+	videoDataRGB = NULL;
+}
+
 void YPDeleteVoip()
 {
-	if(ypVoip != NULL) {
+	if (ypVoip != NULL)
+	{
 		delete ypVoip;
 		ypVoip = NULL;
 	}

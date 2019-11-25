@@ -295,11 +295,11 @@ int YpVoip::getVideoRaw(string strUserId, int w, int h, uint8_t* videoData, int 
 				}
 			}
 			HBITMAP hbmp = image.Detach();
-			pOnGetOtherVideoRaw((char*)m_pUserManager->m_ServiceParam.m_strUserId.c_str(), w, h, hbmp, videoDataLen);
+			pOnGetOtherVideoRaw((char*)m_pUserManager->m_ServiceParam.m_strUserId.c_str(), w, h, hbmp, videoDataRGB, videoDataLen);
 
-			DeleteObject(hbmp);
-			delete[] videoDataRGB;
-			videoDataRGB = NULL;
+			//DeleteObject(hbmp);
+			//delete[] videoDataRGB;
+			//videoDataRGB = NULL;
 		}
 		LeaveCriticalSection(&m_critPicture);
 	}
@@ -405,11 +405,11 @@ void YpVoip::drawPic(YUV_TYPE type, int w, int h, uint8_t* videoData, int videoD
 				}
 			}
 			HBITMAP hbmp = image.Detach();
-			pOnGetSelfVideoRaw((char*)m_pUserManager->m_ServiceParam.m_strUserId.c_str(), w, h, hbmp, videoDataLen);
+			pOnGetSelfVideoRaw((char*)m_pUserManager->m_ServiceParam.m_strUserId.c_str(), w, h, hbmp, videoDataRGB, videoDataLen);
 
-			DeleteObject(hbmp);
-			delete[] videoDataRGB;
-			videoDataRGB = NULL;
+			//DeleteObject(hbmp);
+			//delete[] videoDataRGB;
+			//videoDataRGB = NULL;
 		}
 		LeaveCriticalSection(&m_critPicture);
 	}

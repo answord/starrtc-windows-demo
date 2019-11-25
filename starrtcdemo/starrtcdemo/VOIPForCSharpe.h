@@ -12,7 +12,7 @@ typedef void(__stdcall *OnConnectedCallback)(char* fromID);
 typedef void(__stdcall *OnHangupCallback)(char* fromID);
 typedef void(__stdcall *OnErrorCallback)(char* errorCode);
 
-typedef void(__stdcall *OnGetVideoRawCallback)(char* userId, int w, int h, HBITMAP videoData, int videoDataLen);
+typedef void(__stdcall *OnGetVideoRawCallback)(char* userId, int w, int h, HBITMAP videoData, uint8_t* videoDataRGB, int videoDataLen);
 
 extern "C" {
 	// 登陆(一定要先调用登陆并登陆成功，才能调用其他函数)
@@ -31,7 +31,9 @@ extern "C" {
 	__declspec(dllexport) void YPRefuse();
 	// 挂断（双方都可调用）
 	__declspec(dllexport) void YPHangup();
-	// 释放
+	// 释放图片
+	__declspec(dllexport) void YPDeleteHBITMAP(HBITMAP hBitmap, uint8_t* videoDataRGB);
+	// 释放资源
 	__declspec(dllexport) void YPDeleteVoip();
 
 	// 被叫方收到主叫方的呼叫（被叫方响应）
