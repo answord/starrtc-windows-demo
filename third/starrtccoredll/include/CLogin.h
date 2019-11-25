@@ -7,12 +7,11 @@
 #include<string>
 using namespace std;
 #include "ILoginListener.h"
-#include "ILoginManagerListener.h"
 #include "CUserManager.h"
 class MATH_API CLogin :public ILoginListener
 {
 public:
-	CLogin(CUserManager* pUserManager, ILoginManagerListener* pLoginManagerListener);
+	CLogin(CUserManager* pUserManager);
 
 	~CLogin();
 	/*
@@ -64,7 +63,5 @@ private:
 	 * 通过调度获取IM服务地址
 	 */
 	bool getIMServerAddr();
-private:
-	ILoginManagerListener* m_pLoginManagerListener;
 };
 
