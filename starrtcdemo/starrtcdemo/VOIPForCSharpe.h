@@ -11,6 +11,8 @@ typedef void(__stdcall *OnBusyCallback)(char* fromID);
 typedef void(__stdcall *OnConnectedCallback)(char* fromID);
 typedef void(__stdcall *OnHangupCallback)(char* fromID);
 typedef void(__stdcall *OnErrorCallback)(char* errorCode);
+typedef void(__stdcall *OnLineCallback)(BOOL isOnline);
+
 
 typedef void(__stdcall *OnGetVideoRawCallback)(char* userId, int w, int h, HBITMAP videoData, uint8_t* videoDataRGB, int videoDataLen);
 
@@ -52,6 +54,8 @@ extern "C" {
 	__declspec(dllexport) void YPOnHangup(OnHangupCallback callback);
 	// 收到voip报错
 	__declspec(dllexport) void YPOnError(OnErrorCallback callback);
+	// 收到上下线通知
+	__declspec(dllexport) void YPOnLine(OnLineCallback callback);
 
 	// 收到已方视频数据
 	__declspec(dllexport) void YPOnGetSelfVideoRaw(OnGetVideoRawCallback callback);

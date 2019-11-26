@@ -193,6 +193,11 @@ void YPOnError(OnErrorCallback callback)
 	ypVoip->pOnError = callback;
 }
 
+void YPOnLine(OnLineCallback callback)
+{
+	ypVoip->pOnLine = callback;
+}
+
 void YPOnGetSelfVideoRaw(OnGetVideoRawCallback callback)
 {
 	ypVoip->pOnGetSelfVideoRaw = callback;

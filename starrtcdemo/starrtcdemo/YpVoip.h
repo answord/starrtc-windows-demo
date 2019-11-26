@@ -161,6 +161,7 @@ public:
 	OnConnectedCallback pOnConnected;
 	OnHangupCallback pOnHangup;
 	OnErrorCallback pOnError;
+	OnLineCallback pOnLine;
 
 	OnGetVideoRawCallback pOnGetSelfVideoRaw;
 	OnGetVideoRawCallback pOnGetOtherVideoRaw;

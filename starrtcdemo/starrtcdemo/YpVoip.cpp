@@ -34,6 +34,7 @@ YpVoip::YpVoip()
 	pOnConnected = NULL;
 	pOnHangup = NULL;
 	pOnError = NULL;
+	pOnLine = NULL;
 
 	pOnGetSelfVideoRaw = NULL;
 	pOnGetOtherVideoRaw = NULL;
@@ -463,6 +464,10 @@ void YpVoip::querySoundData(char** pData, int* nLength)
  */
 int YpVoip::online(int maxContentLen)
 {
+	if (pOnLine != NULL)
+	{
+		pOnLine(true);
+	}
 	return 0;
 }
 
@@ -471,6 +476,10 @@ int YpVoip::online(int maxContentLen)
  */
 int YpVoip::offline()
 {
+	if (pOnLine != NULL)
+	{
+		pOnLine(false);
+	}
 	return 0;
 }
 
