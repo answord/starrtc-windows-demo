@@ -273,11 +273,16 @@ int YpVoip::getVideoRaw(string strUserId, int w, int h, uint8_t* videoData, int 
 
 	try
 	{
-		EnterCriticalSection(&m_critPicture);
+		uint8_t* videoDataRGB = NULL;
 		if (videoData != NULL && videoDataLen > 0)
 		{
-			uint8_t* videoDataRGB = new uint8_t[w*h * 3];
+			videoDataRGB = new uint8_t[w*h * 3];
 			CUtil::yuv420p_to_rgb24(videoData, videoDataRGB, w, h);
+		}
+
+		EnterCriticalSection(&m_critPicture);
+		if (videoDataRGB != NULL && videoDataLen > 0)
+		{
 			CImage image;       //使用图片类
 			image.Create(w, h, 24, 0);
 			//首地址  
@@ -372,10 +377,10 @@ void YpVoip::drawPic(YUV_TYPE type, int w, int h, uint8_t* videoData, int videoD
 	
 	try
 	{
-		EnterCriticalSection(&m_critPicture);
+		uint8_t* videoDataRGB = NULL;
 		if (videoData != NULL && videoDataLen > 0)
 		{
-			uint8_t* videoDataRGB = new uint8_t[w*h * 3];
+			videoDataRGB = new uint8_t[w*h * 3];
 			if (type == FMT_NV12 || type == FMT_NV21)
 			{
 				CUtil::yuv420sp_to_rgb24(type, videoData, videoDataRGB, w, h);
@@ -388,6 +393,11 @@ void YpVoip::drawPic(YUV_TYPE type, int w, int h, uint8_t* videoData, int videoD
 			{
 				memcpy(videoDataRGB, videoData, sizeof(uint8_t)*videoDataLen);
 			}
+		}
+
+		EnterCriticalSection(&m_critPicture);
+		if (videoDataRGB != NULL && videoDataLen > 0)
+		{
 			CImage image;       //使用图片类
 			image.Create(w, h, 24, 0);
 			//首地址  
@@ -448,12 +458,28 @@ void YpVoip::querySoundData(char** pData, int* nLength)
 	}
 }
 
+/**
+ * msgServer处于在线状态
+ */
+int YpVoip::online(int maxContentLen)
+{
+	return 0;
+}
+
+/**
+ * msgServer中断状态
+ */
+int YpVoip::offline()
+{
+	return 0;
+}
+
 bool YpVoip::login(string strLocalId)
 {
 	m_pUserManager = new CUserManager();
 	m_pUserManager->m_ServiceParam.m_strUserId = strLocalId;
 
-	CLogin login(m_pUserManager);
+	CLogin login(m_pUserManager, this);
 	m_pVoipManager = new XHVoipManager(this);
 	bool bSuccess = login.logIn();
 	return bSuccess;

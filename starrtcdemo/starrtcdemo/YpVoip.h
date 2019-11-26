@@ -7,9 +7,9 @@
 #include "CSoundManager.h"
 #include "CUserManager.h"
 #include "VOIPForCSharpe.h"
+#include "ILoginManagerListener.h"
 
-
-class YpVoip : public CLocalDataControl, public IVoipManagerListener, public CPicControlCallback, public IShowLiveCallback, public ISoundCallback
+class YpVoip : public CLocalDataControl, public IVoipManagerListener, public ILoginManagerListener, public CPicControlCallback, public IShowLiveCallback, public ISoundCallback
 {
 
 public:
@@ -128,6 +128,16 @@ public:
 public:
 	virtual void getLocalSoundData(char* pData, int nLength);
 	virtual void querySoundData(char** pData, int* nLength);
+public:
+	/**
+		* msgServer处于在线状态
+		*/
+	virtual int online(int maxContentLen);
+
+	/**
+		* msgServer中断状态
+		*/
+	virtual int offline();
 public:
 	CStatic m_ShowArea;
 	//CVoipDataShowView* m_pDataShowView;
